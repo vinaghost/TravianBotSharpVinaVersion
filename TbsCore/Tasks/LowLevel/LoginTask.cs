@@ -43,6 +43,12 @@ namespace TravBotSharp.Files.Tasks.LowLevel
                 var auction = acc.Wb.Html.DocumentNode.SelectSingleNode("//a[contains(@class,'auction')]");
 
                 acc.Access.GetCurrentAccess().IsSittering = (auction != null && auction.HasClass("disable"));
+
+                foreach (var vill in acc.Villages)
+                {
+                    BuildingHelper.ReStartBuilding(acc, vill);
+                }
+                
             }
 
             return TaskRes.Executed;
