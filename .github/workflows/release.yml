@@ -1,8 +1,9 @@
-name: CI-develop
-
-on:
+name: CI-release
+on: 
   push:
-    branches: [ develop ]
+    tags:
+      - '*'
+
 jobs:
   build:
     runs-on: windows-latest
@@ -37,18 +38,26 @@ jobs:
         
       - name: Build Bot
         run: |
-          msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true
+          msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true  
       
-      - name: Get version
-        run: |
-          $version = $version = (Get-Command TravBotSharp\bin\Release\TravBotSharp.exe).FileVersionInfo.FileVersion -replace ".{3}$"
-          $version += ${{github.run_number}}
-          Write-Output "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        
+      - name: Rename folder release
+        run: Rename-Item TravBotSharp\bin\Release TBS-${{steps.tag.outputs.tag}}
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2
+      - name: Archive Release
+        uses: papeloto/action-zip@v1
         with:
-          name: TBS-${{ env.VERSION }}-pre
-          path: TravBotSharp\bin\Release
-          if-no-files-found: error
-      
+            files: TravBotSharp\bin\TBS-${{steps.tag.outputs.tag}}
+            recursive: true
+            dest: TBS-${{steps.tag.outputs.tag}}.zip
+            
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          name: TBS-${{steps.tag.outputs.tag}}
+          artifacts: TBS-${{steps.tag.outputs.tag}}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
