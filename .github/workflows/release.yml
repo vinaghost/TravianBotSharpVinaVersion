@@ -1,0 +1,61 @@
+name: CI-release
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1
+
+      - uses: actions/checkout@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+      
+      - name: Navigate to Workspace
+        run: cd $GITHUB_WORKSPACE
+        
+      - name: Get cache
+        uses: actions/cache@v2
+        with:
+          path: |
+              packages
+              TbsCore/obj/project.assets.json
+              TbsCore/TbsCore.csproj.nuget.g.targets
+              TbsCore/TbsCore.csproj.nuget.g.props.              
+          key: ${{ runner.os }}-nuget3-${{ hashFiles('TbsCore/packages.lock.json') }}
+          restore-keys: |
+              ${{ runner.os }}-nuget3-
+              
+      - name: Restore Packages
+        run: |
+          nuget restore TbsCore/TbsCore.csproj -PackagesDirectory packages
+          nuget restore TravBotSharp/TbsWinForms.csproj -PackagesDirectory packages
+        
+      - name: Build Bot
+        run: |
+          msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true  
+      
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+
+      - name: Archive Release
+        uses: papeloto/action-zip@v1
+        with:
+            files: TravBotSharp\bin\TBS-${{steps.tag.outputs.tag}}
+            recursive: true
+            dest: TBS-${{steps.tag.outputs.tag}}.zip
+            
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          name: TBS-${{steps.tag.outputs.tag}}
+          body: Read changelog at https://discord.gg/swJgV6aGVA
+          artifacts: TBS-${{steps.tag.outputs.tag}}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
