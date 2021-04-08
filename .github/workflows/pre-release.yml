@@ -39,6 +39,18 @@ jobs:
       - name: Build Bot
         run: |
           msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true
+      - name: Upload artifact
+      - uses: actions/upload-artifact@master
+        with:
+          name: TBS-pre
+          path: TravBotSharp\bin\Release
+          
+  Pre-release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --unshallow --tags
       
       - name: 'Get Previous tag'
         id: previoustag
@@ -50,6 +62,12 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
         
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: TBS-pre
+          path: TravBotSharp\bin\Release
+          
       - name: Archive pre release
         uses: papeloto/action-zip@v1
         with:
@@ -64,4 +82,12 @@ jobs:
           prerelease: true
           title: TBS-${{ steps.semvers.outputs.patch }}-pre
           files: TBS-${{ steps.semvers.outputs.patch }}.zip
-      
+          
+  Clear:
+    runs-on: ubuntu-latest
+    needs: Pre-release
+    steps:
+      - name: Delete artifact
+        uses: geekyeggo/delete-artifact@v1
+         with:
+           name: TBS-pre
