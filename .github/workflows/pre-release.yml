@@ -89,5 +89,5 @@ jobs:
     steps:
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v1
-         with:
-           name: TBS-pre
+        with:
+          name: TBS-pre
