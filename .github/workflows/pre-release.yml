@@ -68,23 +68,23 @@ jobs:
         with:
           name: TBS-pre
           path: TravBotSharp/bin/Release
-          
-      - run: ls /home/runner/work/TravianBotSharpVinaVersion/TravianBotSharpVinaVersion/TravBotSharp/bin/Release
       
       - name: Archive pre release
         uses: papeloto/action-zip@v1
         with:
             files: TravBotSharp/bin/Release
             dest: TBS-${{ steps.semvers.outputs.patch }}.zip
-      
+          
       - name: Create pre release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ steps.semvers.outputs.patch }}
+          name: TBS-${{ steps.semvers.outputs.patch }}-pre
           prerelease: true
-          title: TBS-${{ steps.semvers.outputs.patch }}-pre
-          files: TBS-${{ steps.semvers.outputs.patch }}.zip
+          tag: ${{ steps.semvers.outputs.patch }}
+          commit: develop
+          body: "Changelog: ${{ github.event.head_commit.message }}"
+          artifacts: TBS-${{ steps.semvers.outputs.patch }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
           
   Clear:
     runs-on: ubuntu-latest
