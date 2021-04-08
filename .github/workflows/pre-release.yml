@@ -39,8 +39,9 @@ jobs:
       - name: Build Bot
         run: |
           msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true
+          
       - name: Upload artifact
-      - uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@master
         with:
           name: TBS-pre
           path: TravBotSharp\bin\Release
