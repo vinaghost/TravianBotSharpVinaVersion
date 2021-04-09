@@ -377,3 +377,4 @@ data/
 Web/Client/
 Web/Server/
 Web/Shared/
+/TravBotSharp/AssemblyInfo.cs
