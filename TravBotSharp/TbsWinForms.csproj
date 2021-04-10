@@ -438,10 +438,7 @@
     </Compile>
     <Compile Include="Interfaces\ITbsUc.cs" />
     <Compile Include="Program.cs" />
-<<<<<<< HEAD
-    <Compile Include="AssemblyInfo.cs" />
-=======
->>>>>>> 6358a36 (add check new version button)
+
     <Compile Include="UserControls\CoordinatesUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -671,6 +668,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+	<Compile Include="Properties\AssemblyInfo.cs" />											 
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -725,32 +723,20 @@
     <Error Condition="!Exists('..\packages\Fody.6.3.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.3.0\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.5.0.2\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.0.2\build\Costura.Fody.props'))" />
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets'))" />
-<<<<<<< HEAD
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets'))" />
     <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
-		
-=======
-    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
->>>>>>> 6358a36 (add check new version button)
+
     <CallTarget Targets="AssemblyInfo" />
   </Target>
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" />
   <Import Project="..\packages\Fody.6.3.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.3.0\build\Fody.targets')" />
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.89.0.4389.2300\build\Selenium.WebDriver.ChromeDriver.targets')" />
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
-<<<<<<< HEAD
-  
-  <Target Name="AssemblyInfo">
-	<AssemblyInfo CodeLanguage="CS"  
-		OutputFile="AssemblyInfo.cs" 
-		AssemblyVersion="$(BUILD_NUMBER)" 
-		AssemblyFileVersion="$(BUILD_NUMBER)" />
-=======
+
   <Target Name="AssemblyInfo">
 	<AssemblyInfo CodeLanguage="CS"  
 		OutputFile="Properties\AssemblyInfo.cs" 
 		AssemblyVersion="$(BUILD_NUMBER)" 
 		AssemblyFileVersion="$(BUILD_NUMBER)"/>
->>>>>>> 6358a36 (add check new version button)
   </Target>
 </Project>
