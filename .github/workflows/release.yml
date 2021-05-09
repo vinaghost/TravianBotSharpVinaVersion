@@ -34,7 +34,7 @@ jobs:
         
       - name: 'Create changelog'
         id: changelog
-        run: "::set-output name=changelog::$(git log --pretty=format:'%an: %s' 1.19.0..HEAD)"
+        run: "::set-output name=changelog::$(git log --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)"
 
   build:
     runs-on: windows-latest
