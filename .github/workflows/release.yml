@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
+      changelog: ${{ steps.changelog.outputs.changelog }} 
     steps:
       - uses: actions/checkout@v2
       
@@ -36,7 +37,6 @@ jobs:
         id: changelog
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          sinceTag: ${{ steps.previoustag.outputs.tag }}
           
       - name: 'test'
         run: |
@@ -111,9 +111,8 @@ jobs:
           name: TBS-${{needs.version.outputs.version}}
           tag: ${{needs.version.outputs.version}}
           commit: develop
-          body: |
-            **Changelog**: 
-            ${{needs.build.outputs.changelog}}
+          body: |          
+            ${{needs.version.outputs.changelog}}
           artifacts: TBS-${{needs.version.outputs.version}}.zip
           token: ${{ secrets.GITHUB_TOKEN }} 
 
@@ -131,8 +130,8 @@ jobs:
               @everyone
               Version `TBS-${{needs.version.outputs.version}}`
               Click [here](https://github.com/Erol444/TravianBotSharp/releases/tag/${{needs.version.outputs.version}}) to download!
-              **Changelog**
-              ${{needs.build.outputs.changelog}}       
+              
+              ${{needs.version.outputs.changelog}}       
               
   Clear:
     runs-on: ubuntu-latest
