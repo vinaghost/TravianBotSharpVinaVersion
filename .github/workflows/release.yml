@@ -35,6 +35,9 @@ jobs:
       - name: 'Create changelog'
         uses: scottbrenner/generate-changelog-action@master
         id: Changelog
+        with:
+           from-tag: ${{ steps.previoustag.outputs.tag }}
+           to-tag: HEAD
 
   build:
     runs-on: windows-latest
