@@ -25,7 +25,7 @@ jobs:
         id: latesttag
         uses: pozetroninc/github-action-get-latest-release@master        
         with:
-          repository: id: ${{ github.repository }}
+          repository: ${{ github.repository }}
         
       - name: 'Get next version'
         id: semvers
