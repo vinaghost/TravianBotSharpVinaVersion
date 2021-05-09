@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
-      changelog: ${{ steps.Changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
@@ -31,16 +30,17 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
           
-      - run: |
-            echo "{}" > package.json
-            git branch --show-current
+      - 
             
       - name: 'Create changelog'
-        uses: scottbrenner/generate-changelog-action@master
-        id: Changelog
-        with:
-           from-tag: ${{ steps.previoustag.outputs.tag }}
-           to-tag: HEAD
+        run: |
+          git branch --show-current
+          changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}"
+          echo "$changelog"
+          echo "::set-output name=changelog::$changelog"
 
   build:
     runs-on: windows-latest
