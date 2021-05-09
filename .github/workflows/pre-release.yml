@@ -33,7 +33,10 @@ jobs:
       - name: 'Create changelog'
         id: changelog
         run: |
-            changelog=$(git log --no-merges --pretty=format:'%s%n' ${{ steps.previoustag.outputs.tag }}..HEAD)
+            changelog="$(git log --no-merges --pretty=format:'%s' ${{ steps.previoustag.outputs.tag }}..HEAD)"
+            changelog ="${changelog//'%'/%25}"
+            changelog ="${changelog//$'\n'/%0A}"
+            changelog ="${changelog//$'\r'/%0D}"
             echo ::set-output name=changelog:$changelog
 
   build:
