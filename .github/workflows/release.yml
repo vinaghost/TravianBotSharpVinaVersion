@@ -6,7 +6,7 @@ on:
 
 jobs:
   version:
-    if: github.event.pull_request.merged == true || github.event.label.name == 'release'
+    if: github.event.pull_request.merged == true && github.event.label.name == 'release'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
@@ -93,7 +93,7 @@ jobs:
         uses: metcalfc/changelog-generator@v1.0.0
         with:
             myToken: ${{ secrets.GITHUB_TOKEN }}
-            base-ref: {{needs.version.outputs.base-version}}
+            base-ref: ${{needs.version.outputs.base-version}}
             
       - name: Create release
         uses: ncipollo/release-action@v1
