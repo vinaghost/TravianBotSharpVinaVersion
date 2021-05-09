@@ -101,7 +101,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_PRE_BOT }}
           nodetail: true
-          title: New pre-prelease
+          title: New pre-release
           description: |
               Version `TBS-${{needs.version.outputs.version}}`
               Changelog:
@@ -115,6 +115,3 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: TBS-pre
-            
-      
-      
