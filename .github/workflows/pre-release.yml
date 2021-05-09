@@ -34,7 +34,7 @@ jobs:
         id: Changelog
         run: |
           git branch --show-current
-          changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
+          changelog=$(git log --no-merges --pretty=format:'- %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
           changelog="${changelog//'%'/'%25'}"
           changelog="${changelog//$'\n'/'%0A'}"
           changelog="${changelog//$'\r'/'%0D'}"
@@ -100,7 +100,6 @@ jobs:
         with:
             files: TravBotSharp/bin/Release
             dest: TBS-${{needs.version.outputs.version}}.zip
-      - run: echo "${{needs.version.outputs.changelog}}"
       
       - name: Create pre release
         uses: ncipollo/release-action@v1
