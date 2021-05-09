@@ -1,10 +1,11 @@
 name: CI-develop
 
 on:
-  push:
-    branches: [ develop ]
+  pull_request:
+    types: [closed]
 jobs:
   version:
+    if: github.event.pull_request.merged == true || github.event.label.name == 'pre-release'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.patch }}
