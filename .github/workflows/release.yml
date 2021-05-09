@@ -18,6 +18,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           valid-labels: 'release'
+          pull-request-number: ${{ github.event.pull_request.number }}
       
       - run: git fetch --prune --unshallow --tags      
       
