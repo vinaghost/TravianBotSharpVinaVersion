@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.patch }}
-      changelog: ${{ steps.changelog.outputs.changelog }}
+      changelog: ${{ steps.Changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
@@ -28,13 +28,18 @@ jobs:
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
-
+          version: ${{ steps.previoustag.outputs.tag }}  
+            
       - name: 'Create changelog'
-        id: changelog
+        id: Changelog
         run: |
-            changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
-            echo ::set-output name=changelog::$changelog
+          git branch --show-current
+          changelog=$(git log --no-merges --pretty=format:'- %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}"
+          echo "$changelog"
+          echo "::set-output name=changelog::$changelog"
 
   build:
     runs-on: windows-latest
@@ -95,7 +100,7 @@ jobs:
         with:
             files: TravBotSharp/bin/Release
             dest: TBS-${{needs.version.outputs.version}}.zip
-          
+      
       - name: Create pre release
         uses: ncipollo/release-action@v1
         with:
@@ -106,6 +111,7 @@ jobs:
           body: |
             **Changelog**: 
             ${{needs.version.outputs.changelog}}
+            
           artifacts: TBS-${{needs.version.outputs.version}}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
   Discord:

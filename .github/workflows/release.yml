@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
-      changelog: ${{ steps.changelog.outputs.changelog }}
+      changelog: ${{ steps.Changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
@@ -21,21 +21,28 @@ jobs:
       
       - run: git fetch --prune --unshallow --tags
 
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      - name: 'Get latest tag'
+        id: latesttag
+        uses: pozetroninc/github-action-get-latest-release@master        
+        with:
+          repository: id: ${{ github.repository }}
         
       - name: 'Get next version'
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
-
+          version: ${{ steps.latesttag.outputs.release }}
+            
       - name: 'Create changelog'
-        id: changelog
+        id: Changelog
         run: |
-            changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
-            echo ::set-output name=changelog::$changelog
+          git branch --show-current
+          changelog=$(git log --no-merges --pretty=format:'- %s' ${{ steps.latesttag.outputs.release }}..HEAD)
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}"
+          echo "$changelog"
+          echo "::set-output name=changelog::$changelog"
 
   build:
     runs-on: windows-latest
@@ -96,6 +103,7 @@ jobs:
         with:
             files: TravBotSharp/bin/Release
             dest: TBS-${{needs.version.outputs.version}}.zip
+            
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
