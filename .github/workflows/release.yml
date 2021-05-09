@@ -6,12 +6,13 @@ on:
 
 jobs:
   version:
-    if: github.event.pull_request.merged == true && github.event.label.name == 'release'
+    if: github.event.pull_request.merged == true && github.event.label.name == "release"
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
       base-version: ${{ steps.previoustag.outputs.tag }}
     steps:
+      - run: echo ${{github.event.label.name}}
       - uses: actions/checkout@v2
       - run: git fetch --prune --unshallow --tags
       
