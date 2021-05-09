@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
+      changelog: ${{ steps.Changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
@@ -31,6 +32,7 @@ jobs:
           version: ${{ steps.previoustag.outputs.tag }}
             
       - name: 'Create changelog'
+        id: Changelog
         run: |
           git branch --show-current
           changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
