@@ -13,12 +13,11 @@ jobs:
       base-version: ${{ steps.previoustag.outputs.tag }}
     steps:
       - uses: actions/checkout@v2
-      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
-        id: verify-pr-label
+      
+      - uses: docker://agilepathway/pull-request-label-checker:latest
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          valid-labels: 'release'
-          pull-request-number: ${{ github.event.pull_request.number }}
+          one_of: release
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
       
       - run: git fetch --prune --unshallow --tags      
       
