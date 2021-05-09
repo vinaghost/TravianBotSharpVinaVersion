@@ -41,7 +41,7 @@ jobs:
       - name: 'test'
         run: |
             echo ${{ steps.previoustag.outputs.tag }}
-            echo ${{ steps.changelog.outputs.changelog }} 
+            echo ${{ steps.changelog.outputs.changelog }}
 
   build:
     runs-on: windows-latest
