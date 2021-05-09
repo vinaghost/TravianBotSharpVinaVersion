@@ -1,4 +1,4 @@
-name: CI-develop
+name: PreRelease
 
 on:
   pull_request:
@@ -32,7 +32,9 @@ jobs:
 
       - name: 'Create changelog'
         id: changelog
-        run: echo ::set-output name=changelog::$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
+        run: |
+            changelog = $(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
+            echo ::set-output name=changelog::changelog
 
   build:
     runs-on: windows-latest
