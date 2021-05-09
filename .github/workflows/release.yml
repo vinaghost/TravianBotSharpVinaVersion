@@ -31,7 +31,10 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
           
-      - run: echo "{}" > package.json
+      - run: |
+            echo "{}" > package.json
+            git branch --show-current
+            
       - name: 'Create changelog'
         uses: scottbrenner/generate-changelog-action@master
         id: Changelog

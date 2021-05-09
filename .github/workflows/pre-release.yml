@@ -28,9 +28,11 @@ jobs:
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
-          
-      - run: echo "{}" > package.json
+          version: ${{ steps.previoustag.outputs.tag }}          
+      
+      - run: |
+            echo "{}" > package.json
+            git branch --show-current
       - name: 'Create changelog'
         uses: scottbrenner/generate-changelog-action@master
         id: Changelog
