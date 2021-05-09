@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.patch }}
+      changelog: ${{ steps.Changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
@@ -30,13 +31,8 @@ jobs:
           version: ${{ steps.previoustag.outputs.tag }}
 
       - name: 'Create changelog'
-        id: changelog
-        run: |
-            changelog="$(git log --no-merges --pretty=format:'%s' ${{ steps.previoustag.outputs.tag }}..HEAD)"
-            changelog="${changelog//'%'/%25}"
-            changelog="${changelog//$'\n'/%0A}"
-            changelog="${changelog//$'\r'/%0D}"
-            echo ::set-output name=changelog:$changelog
+        uses: scottbrenner/generate-changelog-action@master
+        id: Changelog
 
   build:
     runs-on: windows-latest
