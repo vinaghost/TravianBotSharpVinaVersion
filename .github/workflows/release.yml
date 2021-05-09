@@ -36,7 +36,6 @@ jobs:
         uses: metcalfc/changelog-generator@v1.0.0
         with:
             myToken: ${{ secrets.GITHUB_TOKEN }}
-            base-ref: ${{ steps.previoustag.outputs.tag }}
 
   build:
     runs-on: windows-latest
@@ -114,13 +113,14 @@ jobs:
 
   Discord:
     runs-on: ubuntu-latest
-    needs: [build, release]
+    needs: [version, build, release]
     steps: 
       - name: Send to discord server
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_PRE_BOT }}
           title: New release
+          nodetail: true
           description: |
               @everyone
               Version `TBS-${{needs.version.outputs.version}}`
