@@ -63,10 +63,6 @@ jobs:
           nuget restore TbsCore/TbsCore.csproj -PackagesDirectory packages
           nuget restore TravBotSharp/TbsWinForms.csproj -PackagesDirectory packages
        
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-        
       - name: Build Bot
         run: |
           msbuild.exe TravBotSharp.sln /t:TbsWinForms /nologo /nr:false /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /m /p:BuildProjectReferences=true /p:BUILD_NUMBER=${{needs.version.outputs.version}}.0
