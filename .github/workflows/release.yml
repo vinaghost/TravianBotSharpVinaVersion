@@ -29,8 +29,6 @@ jobs:
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
-          
-      - 
             
       - name: 'Create changelog'
         run: |
