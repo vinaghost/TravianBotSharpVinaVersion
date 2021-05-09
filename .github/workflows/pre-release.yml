@@ -34,7 +34,7 @@ jobs:
         id: changelog
         run: |
             changelog=$(git log --no-merges --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)
-            echo ::set-output name=changelog::$changelog
+            echo ::set-output name=changelog::"$changelog"
 
   build:
     runs-on: windows-latest
