@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.semvers.outputs.minor }}
-      changelog: ${{ steps.changelog.outputs.changelog }} 
+      changelog: ${{ steps.changelog.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
       
       - uses: docker://agilepathway/pull-request-label-checker:latest
         with:
           one_of: release
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} 
       
       - run: git fetch --prune --unshallow --tags      
       
@@ -33,15 +33,8 @@ jobs:
        
         
       - name: 'Create changelog'
-        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         id: changelog
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: 'test'
-        run: |
-            echo ${{ steps.previoustag.outputs.tag }}
-            echo ${{ steps.changelog.outputs.changelog }} 
+        run: "::set-output name=changelog::$(git log --pretty=format:'%an: %s' ${{ steps.previoustag.outputs.tag }}..HEAD)"
 
   build:
     runs-on: windows-latest
