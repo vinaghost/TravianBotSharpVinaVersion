@@ -37,7 +37,8 @@ jobs:
         id: Changelog
         run: |
           git branch --show-current
-          changelog=$(git log --no-merges --pretty=format:'- %s' ${{ steps.latesttag.outputs.release }}..HEAD)
+          last=$(git log --merges --grep='develop' --first-parent master --pretty=format:"%h"  | head -n 1)
+          changelog=$(git log --no-merges --pretty=format:'- %s' $last..HEAD)
           changelog="${changelog//'%'/'%25'}"
           changelog="${changelog//$'\n'/'%0A'}"
           changelog="${changelog//$'\r'/'%0D'}"
