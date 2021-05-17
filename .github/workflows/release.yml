@@ -71,7 +71,6 @@ jobs:
           key: ${{ runner.os }}-nuget3-${{ hashFiles('TbsCore/packages.lock.json') }}
           restore-keys: |
               ${{ runner.os }}-nuget3-
-
       - name: Restore Packages
         run: |
           nuget restore TbsCore/TbsCore.csproj -PackagesDirectory packages
@@ -102,7 +101,7 @@ jobs:
       - name: Archive release
         uses: papeloto/action-zip@v1
         with:
-            files: TravBotSharp/bin/Release
+            files: TravBotSharp/bin/Release                           
             dest: TBS-${{needs.version.outputs.version}}.zip
             
       - name: Create release

@@ -1,0 +1,22 @@
+name: test
+
+on: 
+    push:
+    workflow_dispatch:
+        inputs:
+          name:
+            description: 'Who are you ?'
+            required: false
+            default: '_'
+    
+jobs:
+  printInputs:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        curl --header "Content-Type: application/json" --data "{\"content\": \"@everyone\"}" "${{ secrets.DISCORD_PRE_BOT }}"
+    - name: step-1
+      id: xyz
+      run: echo "::set-output name=ip-address::$(curl -s ifconfig.me)"
+    - name: step-2
+      run: echo "${{ steps.xyz.outputs.ip-address }}"
