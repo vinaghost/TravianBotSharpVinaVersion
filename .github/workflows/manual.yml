@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        curl --header "Content-Type: application/json" --data '{\"content\":\"@everyone\"}' "${{ secrets.DISCORD_PRE_BOT }}"
+        curl --header "Content-Type: application/json" --data "{\"content\": \"@everyone\"}" "${{ secrets.DISCORD_PRE_BOT }}"
