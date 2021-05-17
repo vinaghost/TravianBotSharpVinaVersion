@@ -1,13 +1,7 @@
 name: test
 
 on: 
-    push:
     workflow_dispatch:
-        inputs:
-          name:
-            description: 'Who are you ?'
-            required: false
-            default: '_'
     
 jobs:
   printInputs:
